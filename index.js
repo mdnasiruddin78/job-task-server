@@ -31,6 +31,7 @@ async function run() {
     try {
 
         const userCollection = client.db("jobTaskDb").collection("userInfo");
+        const taskCollection = client.db("jobTaskDb").collection("allTask");
 
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
@@ -45,6 +46,19 @@ async function run() {
                 return res.send({ message: 'user alrady exists', insertedId: null })
             }
             const result = await userCollection.insertOne(user)
+            res.send(result)
+        })
+
+        // add all task
+        app.post('/addTask', async (req, res) => {
+            const task = req.body;
+            const result = await taskCollection.insertOne(task)
+            res.send(result)
+        })
+
+        // task get
+        app.get('/addTask', async (req, res) => {
+            const result = await taskCollection.find().toArray()
             res.send(result)
         })
 
