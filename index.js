@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000
 const app = express()
 
@@ -65,13 +65,20 @@ async function run() {
         })
 
         // task get by email
-        app.get('/taskEmail/:email',async(req,res) => {
+        app.get('/taskEmail/:email', async (req, res) => {
             const email = req.params.email;
-            const query = {email: email}
+            const query = { email: email }
             const result = await taskCollection.find(query).toArray()
             res.send(result)
         })
 
+        // delete a task
+        app.delete('/tasks/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await taskCollection.deleteOne(query)
+            res.send(result)
+        })
 
 
         // Send a ping to confirm a successful connection
