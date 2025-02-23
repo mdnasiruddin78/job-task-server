@@ -57,6 +57,13 @@ async function run() {
         })
 
         // task get
+        app.get('/taskCategory/:category', async (req, res) => {
+            const category = req.params.category
+            const query = { category: category }
+            const result = await taskCollection.find(query).toArray()
+            res.send(result)
+        })
+
         app.get('/addTask', async (req, res) => {
             const result = await taskCollection.find().toArray()
             res.send(result)
